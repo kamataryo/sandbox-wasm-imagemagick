@@ -1,0 +1,14 @@
+{
+  "name": "sandbox-wasm-imagemagick",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:kamataryo/sandbox-wasm-imagemagick.git",
+  "author": "kamataryo <mugil.cephalus+github.com@gmail.com>",
+  "scripts": {
+    "build": "cp node_modules/wasm-imagemagick/dist/magick.wasm ./docs && cp node_modules/wasm-imagemagick/dist/magickApi.js ./docs && cp node_modules/wasm-imagemagick/dist/magick.js ./docs"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "wasm-imagemagick": "^1.2.3"
+  }
+}

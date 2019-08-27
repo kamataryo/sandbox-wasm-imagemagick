@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <img
+      src="https://kamataryo.github.io/torimap/images/%E3%83%9B%E3%82%AA%E3%82%B8%E3%83%AD%E3%82%AB%E3%83%B3%E3%83%A0%E3%83%AA%E3%83%85%E3%83%AB.JPG"
+      width="25%"
+      height="25%"
+      alt=""
+    />
+    <p>↓ convert -crop 50%x50%</p>
+    <script type="module">
+      import * as Magick from './magickApi.js'
+
+      const main = async () => {
+        const arrayBuffer = await fetch(
+          'https://kamataryo.github.io/torimap/images/%E3%83%9B%E3%82%AA%E3%82%B8%E3%83%AD%E3%82%AB%E3%83%B3%E3%83%A0%E3%83%AA%E3%83%85%E3%83%AB.JPG'
+        ).then(res => res.arrayBuffer())
+
+        const files = [
+          { name: 'src.jpg', content: new Uint8Array(arrayBuffer) }
+        ]
+        const command = ['convert', '-crop', '50%x50%', 'src.jpg', 'output.jpg']
+        const processedFiles = await Magick.Call(files, command)
+        const url = URL.createObjectURL(processedFiles[0]['blob'])
+        const img = document.createElement('img')
+        img.setAttribute('src', url)
+        img.setAttribute('width', '25%')
+        img.setAttribute('height', '25%')
+        document.body.append(img)
+      }
+
+      main()
+    </script>
+  </body>
+</html>
