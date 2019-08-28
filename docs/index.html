@@ -4,14 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <title>SANDBOX WASM ImageMagick</title>
   </head>
   <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
     .gallery {
       display: flex;
     }
   </style>
   <body>
+    <h1>ImageMagick is working at client side as Web Assembly!</h1>
     <p>
       See code at
       <a
@@ -25,7 +31,9 @@
         style="width: 100px"
         alt=""
       />
-      <figcaption>Original</figcaption>
+      <figcaption>
+        <pre>src.jpg</pre>
+      </figcaption>
     </figure>
 
     <div id="gallery" class="gallery"></div>
@@ -37,15 +45,17 @@
         ).then(res => res.arrayBuffer())
 
         const commands = [
-          ['convert', 'src.jpg', '-crop', '10%x10%'],
+          ['convert', 'src.jpg', '-crop', '50%x50%+500+500'],
           ['convert', 'src.jpg', '-resize', '100x100'],
-          ['convert', 'src.jpg', '-monochrome'],
           ['convert', 'src.jpg', '-flip'],
-          ['convert', 'src.jpg', '-flop']
+          ['convert', 'src.jpg', '-flop'],
+          ['convert', 'src.jpg', '-shear', '0x50'],
+          ['convert', 'src.jpg', '-rotate', '-45'],
+          ['convert', 'src.jpg', '-monochrome'],
+          ['convert', 'src.jpg', '-sepia-tone', '80%']
         ].map((x, i) => [...x, `output${i}.jpg`])
 
         for (let command of commands) {
-          console.log(arrayBuffer)
           const files = [
             { name: 'src.jpg', content: new Uint8Array(arrayBuffer.slice()) }
           ]
@@ -53,10 +63,12 @@
           const url = URL.createObjectURL(processedFiles[0]['blob'])
           const wrap = document.createElement('figure')
           const cap = document.createElement('figcaption')
-          cap.innerText = command.join(' ')
+          const pre = document.createElement('pre')
+          pre.innerText = command.join(' ')
           const img = document.createElement('img')
           img.setAttribute('src', url)
           img.setAttribute('style', 'width: 100px')
+          cap.append(pre)
           wrap.append(img)
           wrap.append(cap)
           document.getElementById('gallery').append(wrap)
